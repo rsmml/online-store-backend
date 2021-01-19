@@ -1,5 +1,5 @@
 class Api::V1::ProductsController < ApplicationController
-  before_action :set_product, only: %i[show edit update destroy]
+  before_action :set_product, only: %i[show update destroy]
 
   def index
     products = Products.where(:store_id == @current_user.store.id)
@@ -18,10 +18,6 @@ class Api::V1::ProductsController < ApplicationController
     render json: { product: @product, images: images }
   end
 
-  def edit
-    render json: { product: product }
-  end
-
   def create
     product = Product.new(product_params)
     if @product.save
@@ -32,15 +28,15 @@ class Api::V1::ProductsController < ApplicationController
   end
 
   def update
-    if product.update(product_params)
-      render json: { product: product }
+    if @product.update(product_params)
+      render json: { product: @product }
     else
       render json: { status: 401 }
     end
   end
 
   def destroy
-    product.destroy
+    @product.destroy
     render json: { product: 'deleted' }
   end
 

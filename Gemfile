@@ -24,6 +24,8 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'jquery-rails', '~> 4.4'
 gem 'rack-cors'
 gem "jwt_sessions"
+gem 'cloudinary'
+gem 'dotenv-rails', groups: [:development, :test]
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
