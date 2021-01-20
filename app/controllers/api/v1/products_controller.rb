@@ -2,7 +2,7 @@ class Api::V1::ProductsController < ApplicationController
   before_action :set_product, only: %i[show update destroy]
 
   def index
-    products = Products.where(:store_id == @current_user.store.id)
+    products = Product.all
     products_with_pictures = []
     products.each do |product|
       products_with_pictures << { 'product' => product, 'photos' => product.photos.map { |p| p.key } }

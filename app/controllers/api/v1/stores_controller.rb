@@ -13,8 +13,12 @@ class Api::V1::StoresController < ApplicationController
 
   def create
     store = current_user.stores.build(store_params)
-    if store.save
-      render json: { status: :created, store: store }
+    store.save
+    company = Company.new
+    company.user_id = current_user.id
+    company.store_id = store.id
+    if company.save
+      render json: { status: :created, store: store, company: company }
     else
       render json: { status: 401 }
     end
