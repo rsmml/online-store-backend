@@ -1,1 +1,1 @@
-JWTSessions.encryption_key = 'topsecret'
+JWTSessions.encryption_key = 'secret'

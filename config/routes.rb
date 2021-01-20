@@ -6,6 +6,8 @@ Rails.application.routes.draw do
       resources :stores
     end
   end
+  # Check User Exist?
+  get :check_user, to: 'signin#check_user'
 
   post 'refresh',   controller: :refresh, action: :create
   post 'signin',    controller: :signin,  action: :create

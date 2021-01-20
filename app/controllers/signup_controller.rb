@@ -1,4 +1,6 @@
 class SignupController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
   def create
     user = User.new(user_params)
 
@@ -10,7 +12,7 @@ class SignupController < ApplicationController
       response.set_cookie(JWTSessions.access_cookie,
                           value: tokens[:access],
                           httponly: true,
-                          secure: Rails.env.production?)
+                          secure: Rails.env.production? )
 
       render json: { csrf: tokens[:csrf] }
     else

@@ -1,8 +1,9 @@
 class SigninController < ApplicationController
-  before_action :authorize_access_request!, only: :destroy
+  skip_before_action :verify_authenticity_token
+  # skip_before_action :authorize_access_request!, only: :destroy
 
   def create
-    user = User.find_by(email: params[:email])
+    user = User.find_by!(email: params[:email])
 
     if user.authenticate(params[:password])
       payload = { user_id: user.id }
@@ -12,7 +13,7 @@ class SigninController < ApplicationController
                           value: tokens[:access],
                           httponly: true,
                           secure: Rails.env.production?)
-      render json: { crsf: tokens[:csrf] }
+      render json: { csrf: tokens[:csrf] }
     else
       not_authorized
     end
@@ -22,6 +23,11 @@ class SigninController < ApplicationController
     session = JWTSessions::Session.new(payload: payload)
     session.flush_by_access_payload
     render json: :ok
+  end
+
+  def check_user
+    users = User.all
+    render json: { users: users }
   end
 
   private
