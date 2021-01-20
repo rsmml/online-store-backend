@@ -1,8 +1,9 @@
 class Api::V1::CompaniesController < ApplicationController
+  before_action :authorize_access_request!
   before_action :set_company, only: %i[show update destroy]
 
   def index
-    companies = Company.where(:user_id == @current_user.id)
+    companies = current_user.companies.all
     render json: { companies: companies }
   end
 
@@ -35,7 +36,7 @@ class Api::V1::CompaniesController < ApplicationController
   private
 
   def set_company
-    @company = Company.find(params[:id])
+    @company = current_user.companies.find(params[:id])
   end
 
   def company_params

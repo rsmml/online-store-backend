@@ -1,8 +1,9 @@
 class Api::V1::StoresController < ApplicationController
+  before_action :authorize_access_request!
   before_action :set_store, only: %i[show update destroy]
 
   def index
-    stores = Store.where(:user_id == @current_user.id)
+    stores = current_user.stores.all
     render json: { stores: stores }
   end
 
@@ -11,7 +12,7 @@ class Api::V1::StoresController < ApplicationController
   end
 
   def create
-    store = Store.new(store_params)
+    store = current_user.stores.build(store_params)
     if store.save
       render json: { status: :created, store: store }
     else
@@ -35,7 +36,7 @@ class Api::V1::StoresController < ApplicationController
   private
 
   def set_store
-    @store = Store.find(params[:id])
+    @store = current_user.stores.find(params[:id])
   end
 
   def store_params
